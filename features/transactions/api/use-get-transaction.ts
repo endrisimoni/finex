@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { client } from "@/lib/hono";
+import { covertAmountFromMiliunits } from "@/lib/utils";
 
 export const useGetTransaction = (id?: string) => {
     const query = useQuery({
@@ -15,7 +16,7 @@ export const useGetTransaction = (id?: string) => {
             }
 
             const { data } = await response.json();
-            return data;
+            return { ...data, amount: covertAmountFromMiliunits(data.amount) };
         },
     });
 

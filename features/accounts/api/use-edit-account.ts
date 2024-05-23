@@ -5,11 +5,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { client } from "@/lib/hono";
 
 type ResponseType = InferResponseType<
-    typeof client.api.accounts[":id"]["$patch"]
+    (typeof client.api.accounts)[":id"]["$patch"]
 >;
 
 type RequestType = InferRequestType<
-    typeof client.api.accounts[":id"]["$patch"]
+    (typeof client.api.accounts)[":id"]["$patch"]
 >["json"];
 
 export const useEditAccount = (id?: string) => {
@@ -27,6 +27,7 @@ export const useEditAccount = (id?: string) => {
             toast.success("Account updated");
             queryClient.invalidateQueries({ queryKey: ["account", { id }] });
             queryClient.invalidateQueries({ queryKey: ["accounts"] });
+            queryClient.invalidateQueries({ queryKey: ["transactions"] });
             //TODO: Invalidate summary and transactions
         },
         onError: () => {

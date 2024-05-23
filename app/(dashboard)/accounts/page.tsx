@@ -56,7 +56,7 @@ const AccountsPage = () => {
                         }}
                         columns={columns}
                         data={accounts}
-                        filterKey="email"
+                        filterKey="name"
                         disabled={isDisabled}
                     />
                 </CardContent>
