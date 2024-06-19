@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { client } from "@/lib/hono";
 import { useSearchParams } from "next/navigation";
-import { covertAmountFromMiliunits } from "@/lib/utils";
+
+import { client } from "@/lib/hono";
+import { convertAmountFromMiliunits } from "@/lib/utils";
 
 export const useGetSummary = () => {
     const params = useSearchParams();
@@ -10,7 +11,6 @@ export const useGetSummary = () => {
     const accountId = params.get("accountId") || "";
 
     const query = useQuery({
-        //TODO: Check if params are needed in the key
         queryKey: ["summary", { from, to, accountId }],
         queryFn: async () => {
             const response = await client.api.summary.$get({
@@ -28,17 +28,19 @@ export const useGetSummary = () => {
             const { data } = await response.json();
             return {
                 ...data,
-                income: covertAmountFromMiliunits(data.incomeAmount),
-                expenses: covertAmountFromMiliunits(data.expensesAmount),
-                remaining: covertAmountFromMiliunits(data.remainingAmount),
+                incomeAmount: convertAmountFromMiliunits(data.incomeAmount),
+                expensesAmount: convertAmountFromMiliunits(data.expensesAmount),
+                remainingAmount: convertAmountFromMiliunits(
+                    data.remainingAmount
+                ),
                 categories: data.categories.map((category) => ({
                     ...category,
-                    value: covertAmountFromMiliunits(category.value),
+                    value: convertAmountFromMiliunits(category.value),
                 })),
                 days: data.days.map((day) => ({
                     ...day,
-                    income: covertAmountFromMiliunits(day.income),
-                    expenses: covertAmountFromMiliunits(day.expenses),
+                    income: convertAmountFromMiliunits(day.income),
+                    expenses: convertAmountFromMiliunits(day.expenses),
                 })),
             };
         },

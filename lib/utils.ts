@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export function covertAmountFromMiliunits(amount: number) {
+export function convertAmountFromMiliunits(amount: number) {
     return amount / 1000;
 }
 
